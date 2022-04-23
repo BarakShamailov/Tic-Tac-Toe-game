@@ -27,7 +27,7 @@ def player_input():
 
     return (player1,player2)
 
-
+#this function check if the user pick a valid choice
 def validiation_digit():
     valid_range = range(1,10)
     position_user = 'wrong'
