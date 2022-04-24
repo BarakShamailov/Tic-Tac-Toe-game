@@ -27,13 +27,13 @@ def player_input():
 
     return (player1,player2)
 
-#this function check if the user pick a valid choice
+
 def validiation_digit():
     valid_range = range(1,10)
     position_user = 'wrong'
-    while position_user.isdigit() == False:
+    while not position_user.isdigit():
         position_user = input('Please pick position on the board to mark (1-9): ')
-        if position_user.isdigit() == False:
+        if not position_user.isdigit():
             print('You picked worng choice, please try again')
         else:
             if int(position_user) not in valid_range:
@@ -119,12 +119,13 @@ def replay():
 
 
 
-print('Welcome to Tic Tac Toe!')
+print('Welcome to Tic Tac Toe game!')
 
 while True:
     # Set the game up here
     list_board = [' '] * 10
     display_board(list_board)
+    #the first player chosen to start
     first_player = choose_first()
     second_player = 0
     if first_player == 2:
@@ -135,41 +136,54 @@ while True:
     players_symblos = player_input()
     print(f'player {first_player} is: {players_symblos[0]}')
     print(f'player {second_player} is: {players_symblos[1]}')
-    while game_win == False:
+    counter_first = first_player #the variable decide who need to start first
 
+    while not game_win:
         # player 1 turn
-        print("\nplayer 1 turn:")
-        positin = player_choice(list_board)
-        while positin == -1:
+        if counter_first == 1:
+            markP1 = ''
+            print("\nplayer 1 turn:")
             positin = player_choice(list_board)
-
-        place_marker(list_board, players_symblos[0], positin)
-        display_board(list_board)
-        game_win = win_check(list_board,players_symblos[0])
-        if game_win:
-            print("Congratulations! player 1 you won")
-            break
-        if full_board(list_board):
-            print('Draw, no one won...\n')
-            break
+            while positin == -1:
+                positin = player_choice(list_board)
+            if first_player == 1:
+                markP1 = players_symblos[0]
+            else:
+                markP1 = players_symblos[1]
+            place_marker(list_board, markP1, positin)
+            display_board(list_board)
+            game_win = win_check(list_board, markP1)
+            if game_win:
+                print("Congratulations! player 1 you won")
+                break
+            if full_board(list_board):
+                print('Draw, no one won...\n')
+                break
+            counter_first = 2
 
         # player 2 turn
-        print("\nplayer 2 turn:")
-        positin = player_choice(list_board)
-        while positin == -1:
+        else:
+            markP2 = ''
+            print("\nplayer 2 turn:")
             positin = player_choice(list_board)
+            while positin == -1:
+                positin = player_choice(list_board)
+            if first_player == 2:
+                markP2 = players_symblos[0]
+            else:
+                markP2 = players_symblos[1]
+            place_marker(list_board, markP2, positin)
+            display_board(list_board)
+            game_win = win_check(list_board, markP2)
+            if game_win:
+                print("Congratulations! player 2 you won")
+                break
+            if full_board(list_board):
+                print('Draw, no one won...\n')
+                break
+            counter_first = 1
 
-        place_marker(list_board, players_symblos[1], positin)
-        display_board(list_board)
-        game_win = win_check(list_board, players_symblos[1])
-        if game_win:
-            print("Congratulations! player 2 you won")
-            break
-        if full_board(list_board):
-            print('Draw, no one won...\n')
-            break
     #if the user want to still play or not
-    if replay() == False:
+    if not replay():
         break
-
 
